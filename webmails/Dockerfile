@@ -15,13 +15,14 @@ COPY roundcube/roundcube.diff /tmp/roundcube.diff
 RUN set -euxo pipefail \
   ; apk add --no-cache \
     nginx gpg gpg-agent patch \
-    php84 php84-fpm php84-mbstring php84-zip php84-xml php84-simplexml php84-pecl-apcu \
+    "php84>=8.4.27-r0" "php84-fpm>=8.4.27-r0" php84-mbstring php84-zip php84-xml php84-simplexml php84-pecl-apcu \
     php84-dom php84-curl php84-exif gd php84-gd php84-iconv php84-intl php84-openssl php84-ctype \
     php84-pdo_sqlite php84-pdo_mysql php84-pdo_pgsql php84-pdo php84-sodium libsodium php84-tidy \
     php84-enchant enchant2 php84-opcache php84-session php84-sockets php84-fileinfo php84-xmlreader php84-xmlwriter \
     aspell-uk aspell-ru aspell-fr aspell-de aspell-en \
   ; ln -sf /usr/bin/php84 /usr/bin/php \
   ; php -v | head -1 | grep -q '^PHP 8\.4\.' \
+  ; php84 -r 'if (version_compare(PHP_VERSION, "8.4.27", "<")) {fwrite(STDERR, "PHP 8.4.27+ required to fix CVE-2026-109618 and CVE-2026-109619\n"); exit(1);}' \
   ; php84 -r 'exit(enchant_broker_list_dicts(enchant_broker_init()) ? 0 : 1);' \
   ; rm /etc/nginx/http.d/default.conf \
   ; rm /etc/php84/php-fpm.d/www.conf \
