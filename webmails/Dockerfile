@@ -12,6 +12,8 @@ COPY roundcube/roundcube.diff /tmp/roundcube.diff
 # roundcube's bin/*.sh need an unversioned /usr/bin/php, which alpine ships
 # only for its current default. And enchant reports "no dictionaries" rather
 # than failing, so the check below catches a bad aspell-*/backend pairing.
+# Require the PHP security release addressing CVE-2026-109618/109619.
+# Fail the image build rather than ship a vulnerable PHP-FPM runtime.
 RUN set -euxo pipefail \
   ; apk add --no-cache \
     nginx gpg gpg-agent patch \
