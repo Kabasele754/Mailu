@@ -67,6 +67,7 @@ RUN set -euxo pipefail \
   ; curl -sL ${SNUFFLEUPAGUS_URL} | tar xz \
   ; cd snuffleupagus-${SNUFFLEUPAGUS_VERSION} \
   ; rm -rf src/tests/*php7*/ src/tests/*session*/ src/tests/broken_configuration/ src/tests/*cookie* src/tests/upload_validation/ \
+  # Keep Snuffleupagus built against patched PHP headers (CVE-2026-109618/109619).
   ; apk add --virtual .build-deps "php84-dev>=8.4.27-r0" php84-cgi php84-simplexml php84-xml pcre-dev build-base php84-pear php84-openssl re2c \
   ; ln -sf /usr/bin/phpize84 /usr/bin/phpize \
   ; ln -sf /usr/bin/php-config84 /usr/bin/php-config \
